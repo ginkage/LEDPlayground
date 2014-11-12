@@ -17,7 +17,6 @@ public class MainActivity extends Activity {
 	public static final String SSID = "\"EASYCOLOR\"";
 	private SeekBar seekBar = null;
 	private TextView statusText = null;
-	private ToggleButton goButton = null;
 	private TCPClient mTcpClient = null;
 
 	@Override
@@ -41,28 +40,7 @@ public class MainActivity extends Activity {
 			});
 
 		statusText = (TextView) findViewById(R.id.status);
-
-		goButton = (ToggleButton) findViewById(R.id.power);
-		if (goButton != null)
-			goButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-				@Override
-				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-					if (isChecked) {
-						WifiManager manager = (WifiManager) getSystemService(WIFI_SERVICE);
-						WifiInfo info = manager.getConnectionInfo();
-						String connSSID = info.getSSID();
-						if (connSSID.equals(SSID))
-							openSocket();
-						else {
-							if (statusText != null)
-								statusText.setText("Wrong network SSID.");
-							goButton.setChecked(false);
-						}
-					}
-					else
-						closeSocket();
-				}
-			});
+		openSocket();
 	}
 
 	@Override
@@ -92,14 +70,14 @@ public class MainActivity extends Activity {
 		protected void onProgressUpdate(String... values) {
 			super.onProgressUpdate(values);
 			statusText.setText(values[0]);
-			if (mTcpClient != null && !mTcpClient.isConnected())
-				goButton.setChecked(false);
 		}
 	}
 
 	private void openSocket() {
-		statusText.setText("Connecting...");
-		new connectTask().execute("");
+		if (mTcpClient == null || !mTcpClient.isConnected()) {
+			statusText.setText("Connecting...");
+			new connectTask().execute("");
+		}
 	}
 
 	private void closeSocket() {

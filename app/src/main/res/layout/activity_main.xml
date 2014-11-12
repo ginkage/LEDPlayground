@@ -20,14 +20,6 @@
         android:text="Idle"
         android:id="@+id/status"/>
 
-    <ToggleButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Go"
-        android:id="@+id/power"
-        android:layout_gravity="center"
-        />
-
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="wrap_content"

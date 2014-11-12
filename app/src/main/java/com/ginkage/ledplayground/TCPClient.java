@@ -63,11 +63,10 @@ public class TCPClient {
 				//send the message to the server
 				out = new BufferedOutputStream(socket.getOutputStream());
 
-				Log.i("TCP Client", "C: Sent.");
-				Log.i("TCP Client", "C: Done.");
-
 				//receive the message which the server sends back
 				in = new BufferedInputStream(socket.getInputStream());
+
+				Log.i("TCP Client", "C: Connected.");
 
 				if (mMessageListener != null)
 					mMessageListener.messageReceived("Connected.");
@@ -91,6 +90,7 @@ public class TCPClient {
 				//the socket must be closed. It is not possible to reconnect to this socket
 				// after it is closed, which means a new socket instance has to be created.
 				socket.close();
+				Log.i("TCP Client", "C: Disonnected.");
 			}
 		}
 		catch (Exception e) {
