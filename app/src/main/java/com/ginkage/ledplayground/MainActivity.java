@@ -6,12 +6,8 @@ import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.ToggleButton;
-
-import java.util.Timer;
 
 public class MainActivity extends Activity {
 	public static final String SSID = "\"EASYCOLOR\"";
@@ -40,7 +36,12 @@ public class MainActivity extends Activity {
 			});
 
 		statusText = (TextView) findViewById(R.id.status);
-		openSocket();
+
+		WifiManager manager = (WifiManager) getSystemService(WIFI_SERVICE);
+		WifiInfo info = manager.getConnectionInfo();
+		String connSSID = info.getSSID();
+		if (connSSID.equals(SSID))
+			openSocket();
 	}
 
 	@Override
