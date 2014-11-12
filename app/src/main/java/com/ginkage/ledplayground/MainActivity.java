@@ -25,7 +25,7 @@ public class MainActivity extends Activity {
 			seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 				@Override
 				public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-					setColor(progress + 1);
+					setColor(progress + 5);
 				}
 
 				@Override
@@ -114,9 +114,9 @@ public class MainActivity extends Activity {
 	private void setColor(int color)
 	{
 		if (color >= 1 && color <= 96) {
-			int[] msg = new int[] { 0x01, 0x01, color, color + 4 };
-			if (seekBar != null && seekBar.getProgress() != color - 1)
-				seekBar.setProgress(color - 1);
+			int[] msg = new int[] { 0x01, 0x01, color - 4, color };
+			if (seekBar != null && seekBar.getProgress() != color - 5)
+				seekBar.setProgress(color - 5);
 			sendMessage(msg);
 		}
 	}
@@ -153,12 +153,12 @@ public class MainActivity extends Activity {
 
 	public void onClickColor(View view) {
 		switch (view.getId()) {
-			case R.id.cyan:     setColor(0x02); break;
-			case R.id.green:    setColor(0x0D); break;
-			case R.id.yellow:   setColor(0x1E); break;
-			case R.id.red:      setColor(0x2C); break;
-			case R.id.magenta:  setColor(0x3C); break;
-			case R.id.blue:     setColor(0x4C); break;
+			case R.id.green:    setColor(0x10); break;
+			case R.id.yellow:   setColor(0x20); break;
+			case R.id.red:      setColor(0x30); break;
+			case R.id.magenta:  setColor(0x40); break;
+			case R.id.blue:     setColor(0x50); break;
+			case R.id.cyan:     setColor(0x60); break;
 		}
 	}
 }
