@@ -2,10 +2,12 @@ package com.ginkage.ledplayground;
 
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.os.SystemClock;
 import android.util.Log;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.TimerTask;
 
 public class TCPClient {
 	private String serverMessage;
@@ -14,8 +16,8 @@ public class TCPClient {
 	private OnMessageReceived mMessageListener = null;
 	private boolean mRun = false;
 
-	private BufferedWriter out = null;
-	private BufferedReader in = null;
+	private BufferedOutputStream out = null;
+	private BufferedInputStream in = null;
 
 	/**
 	 *  Constructor of the class. OnMessagedReceived listens for the messages received from server
@@ -56,33 +58,32 @@ public class TCPClient {
 			//here you must put your computer's IP address.
 			InetAddress serverAddr = InetAddress.getByName(SERVERIP);
 
-			Log.e("TCP Client", "C: Connecting...");
+			Log.i("TCP Client", "C: Connecting...");
 
 			//create a socket to make the connection with the server
 			Socket socket = new Socket(serverAddr, SERVERPORT);
 
 			try {
 				//send the message to the server
-				out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+				out = new BufferedOutputStream(socket.getOutputStream());
 
-				Log.e("TCP Client", "C: Sent.");
-				Log.e("TCP Client", "C: Done.");
+				Log.i("TCP Client", "C: Sent.");
+				Log.i("TCP Client", "C: Done.");
 
 				//receive the message which the server sends back
-				in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				in = new BufferedInputStream(socket.getInputStream());
+
+				if (mMessageListener != null)
+					mMessageListener.messageReceived("Connected.");
 
 				//in this while the client listens for the messages sent by the server
+				int[] msg = new int[] { 0xFF };
 				while (mRun) {
-					serverMessage = in.readLine();
-
-					if (serverMessage != null && mMessageListener != null) {
-						//call the method messageReceived from MyActivity class
-						mMessageListener.messageReceived(serverMessage);
-					}
-					serverMessage = null;
+					sendMessage(msg);
+					SystemClock.sleep(1000);
 				}
 
-				Log.e("RESPONSE FROM SERVER", "S: Received Message: '" + serverMessage + "'");
+//				Log.e("RESPONSE FROM SERVER", "S: Received Message: '" + serverMessage + "'");
 			}
 			catch (Exception e) {
 				Log.e("TCP", "S: Error", e);

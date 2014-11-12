@@ -11,12 +11,16 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class MainActivity extends Activity {
-	public static final String SSID = "EASYCOLOR";
+	public static final String SSID = "\"EASYCOLOR\"";
 	private SeekBar seekBar = null;
 	private TextView statusText = null;
 	private ToggleButton goButton = null;
 	private TCPClient mTcpClient = null;
+	private Timer timer = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +52,8 @@ public class MainActivity extends Activity {
 					if (isChecked) {
 						WifiManager manager = (WifiManager) getSystemService(WIFI_SERVICE);
 						WifiInfo info = manager.getConnectionInfo();
-						if (info.getSSID().equals(SSID))
+						String connSSID = info.getSSID();
+						if (connSSID.equals(SSID))
 							openSocket();
 						else {
 							if (statusText != null)
@@ -60,6 +65,8 @@ public class MainActivity extends Activity {
 						closeSocket();
 				}
 			});
+
+		timer = new Timer();
 	}
 
 	@Override
@@ -143,9 +150,8 @@ public class MainActivity extends Activity {
 		int[] msg = null;
 
 		switch (view.getId()) {
-			case R.id.toggle1:  msg = new int[] { 0x01, 0x17, 0xD0, 0xEA }; break;
-			case R.id.toggle2:  msg = new int[] { 0x02, 0x12, 0xA9, 0xBF }; break;
-			case R.id.toggle3:  msg = new int[] { 0x02, 0x12, 0xAB, 0xC1 }; break;
+			case R.id.toggle_off:   msg = new int[] { 0x02, 0x12, 0xA9, 0xBF }; break;
+			case R.id.toggle_on:    msg = new int[] { 0x02, 0x12, 0xAB, 0xC1 }; break;
 		}
 
 		if (msg != null)
@@ -172,13 +178,12 @@ public class MainActivity extends Activity {
 
 	public void onClickColor(View view) {
 		switch (view.getId()) {
-			case R.id.green:    setColor(0x10); break;
-			case R.id.yellow:   setColor(0x20); break;
-			case R.id.red:      setColor(0x30); break;
-			case R.id.magenta:  setColor(0x40); break;
-			case R.id.blue:     setColor(0x50); break;
-			case R.id.cyan:     setColor(0x60); break;
+			case R.id.cyan:     setColor(0x02); break;
+			case R.id.green:    setColor(0x0D); break;
+			case R.id.yellow:   setColor(0x1E); break;
+			case R.id.red:      setColor(0x2C); break;
+			case R.id.magenta:  setColor(0x3C); break;
+			case R.id.blue:     setColor(0x4C); break;
 		}
-
 	}
 }
