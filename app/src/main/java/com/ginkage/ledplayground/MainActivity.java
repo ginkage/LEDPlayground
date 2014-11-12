@@ -12,7 +12,6 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import java.util.Timer;
-import java.util.TimerTask;
 
 public class MainActivity extends Activity {
 	public static final String SSID = "\"EASYCOLOR\"";
@@ -20,7 +19,6 @@ public class MainActivity extends Activity {
 	private TextView statusText = null;
 	private ToggleButton goButton = null;
 	private TCPClient mTcpClient = null;
-	private Timer timer = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,8 +63,6 @@ public class MainActivity extends Activity {
 						closeSocket();
 				}
 			});
-
-		timer = new Timer();
 	}
 
 	@Override

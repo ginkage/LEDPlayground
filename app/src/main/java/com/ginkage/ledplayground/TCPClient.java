@@ -1,16 +1,12 @@
 package com.ginkage.ledplayground;
 
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.os.SystemClock;
 import android.util.Log;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.util.TimerTask;
 
 public class TCPClient {
-	private String serverMessage;
 	public static final String SERVERIP = "10.10.100.254"; //your computer IP address
 	public static final int SERVERPORT = 8899;
 	private OnMessageReceived mMessageListener = null;
@@ -82,8 +78,6 @@ public class TCPClient {
 					sendMessage(msg);
 					SystemClock.sleep(1000);
 				}
-
-//				Log.e("RESPONSE FROM SERVER", "S: Received Message: '" + serverMessage + "'");
 			}
 			catch (Exception e) {
 				Log.e("TCP", "S: Error", e);
